@@ -51,4 +51,4 @@ struct WindowInfo
 	bool	windowed; // 창모드 or 전체화면
 };
 
-void HelloEngine();
+extern unique_ptr<class Engine> GEngine;

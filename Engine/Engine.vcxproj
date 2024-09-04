@@ -151,7 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="CommmandQueue.h" />
+    <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DescriptorHeap.h" />
     <ClInclude Include="Device.h" />
@@ -161,7 +161,7 @@
     <ClInclude Include="SwapChain.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CommmandQueue.cpp" />
+    <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="DescriptorHeap.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Engine.cpp" />
