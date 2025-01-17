@@ -6,6 +6,7 @@
 #include "Timer.h"
 #include "SceneManager.h"
 #include "Light.h"
+#include "Resources.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -26,10 +27,11 @@ void Engine::Init(const WindowInfo& info)
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 256);
 	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 256);
 
+	ResizeWindow(info.width, info.height);
+
 	GET_SINGLE(Input)->Init(info.hwnd);
 	GET_SINGLE(Timer)->Init();
-
-	ResizeWindow(info.width, info.height);
+	GET_SINGLE(Resources)->Init();
 }
 
 void Engine::Update()
