@@ -47,7 +47,7 @@ void Engine::Update()
 
 	Render();
 
-	showFps();
+	ShowFps();
 }
 
 void Engine::Render()
@@ -79,12 +79,12 @@ void Engine::ResizeWindow(int32 width, int32 height)
 	::SetWindowPos(_window.hwnd, 0, 100, 100, width, height, 0);
 }
 
-void Engine::showFps()
+void Engine::ShowFps()
 {
 	uint32 fps = GET_SINGLE(Timer)->GetFps();
 
 	WCHAR text[100] = L"";
-	::wsprintf(text, L"FPS: %d", fps);
+	::wsprintf(text, L"FPS : %d", fps);
 
 	::SetWindowText(_window.hwnd, text);
 }

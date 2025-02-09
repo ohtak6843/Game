@@ -30,7 +30,7 @@ public:
 	void Render();
 	void Render(shared_ptr<class InstancingBuffer>& buffer);
 
-	uint16 GetInstanceID();
+	uint64 GetInstanceID();
 
 private:
 	shared_ptr<Mesh> _mesh;

@@ -38,7 +38,7 @@ public:
 	void ResizeWindow(int32 widht, int32 height);
 
 private:
-	void showFps();
+	void ShowFps();
 	void CreateConstantBuffer(CBV_REGISTER reg, uint32 bufferSize, uint32 count);
 	void CreateRenderTargetGroups();
 

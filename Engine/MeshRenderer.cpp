@@ -22,19 +22,19 @@ void MeshRenderer::Render()
 	_mesh->Render();
 }
 
-void MeshRenderer::Render(shared_ptr<class InstancingBuffer>& buffer)
+void MeshRenderer::Render(shared_ptr<InstancingBuffer>& buffer)
 {
 	buffer->PushData();
 	_material->PushGraphicsData();
 	_mesh->Render(buffer);
 }
 
-uint16 MeshRenderer::GetInstanceID()
+uint64 MeshRenderer::GetInstanceID()
 {
 	if (_mesh == nullptr || _material == nullptr)
 		return 0;
 
-	// uint64 id = (_mesh->GetID() << 32) | _material->GetID();
+	//uint64 id = (_mesh->GetID() << 32) | _material->GetID();
 	InstanceID instanceID{ _mesh->GetID(), _material->GetID() };
 	return instanceID.id;
 }

@@ -30,7 +30,7 @@ void Mesh::Render(uint32 instanceCount)
 	GRAPHICS_CMD_LIST->DrawIndexedInstanced(_indexCount, instanceCount, 0, 0, 0);
 }
 
-void Mesh::Render(shared_ptr<class InstancingBuffer>& buffer)
+void Mesh::Render(shared_ptr<InstancingBuffer>& buffer)
 {
 	D3D12_VERTEX_BUFFER_VIEW bufferViews[] = { _vertexBufferView, buffer->GetBufferView() };
 	GRAPHICS_CMD_LIST->IASetVertexBuffers(0, 2, bufferViews);

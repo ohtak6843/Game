@@ -156,10 +156,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-			//material->SetInt(0, 1);
-			//meshRenderer->SetMaterial(material);
-			material->SetInt(0, 0);
-			meshRenderer->SetMaterial(material->Clone());
+			material->SetInt(0, 1);
+			meshRenderer->SetMaterial(material);
+			//material->SetInt(0, 0);
+			//meshRenderer->SetMaterial(material->Clone());
 		}
 		obj->AddComponent(meshRenderer);
 		scene->AddGameObject(obj);
