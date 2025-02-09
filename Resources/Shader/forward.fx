@@ -16,7 +16,7 @@ struct VS_OUT
 {
     float4 pos : SV_Position;
     float2 uv : TEXCOORD;
-    float3 viewPos : Position;
+    float3 viewPos : POSITION;
     float3 viewNormal : NORMAL;
     float3 viewTangent : TANGENT;
     float3 viewBinormal : BINORMAL;
