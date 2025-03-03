@@ -291,7 +291,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region FBX
 	{
-		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Dragon.fbx");
+		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Male.fbx");
 
 		vector<shared_ptr<GameObject>> gameObjects = meshData->Instantiate();
 
@@ -301,6 +301,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 300.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			gameObject->GetTransform()->SetLocalRotation(Vec3(-3.14 / 2, 0.f, 0.f));
 			scene->AddGameObject(gameObject);
 			gameObject->AddComponent(make_shared<TestDragon>());
 		}
