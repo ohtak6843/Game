@@ -77,19 +77,42 @@ void FBXLoader::ParseNode(FbxNode* node)
 		case FbxNodeAttribute::eMesh:
 			LoadMesh(node->GetMesh());
 			
-			FbxAMatrix matFromNode = node->EvaluateLocalTransform();
+			FbxAMatrix matFromNode = node->EvaluateGlobalTransform();
 			FbxVector4 nodePosition = matFromNode.GetT();
 			FbxVector4 nodeRotation = matFromNode.GetR();
 			FbxVector4 nodeScale = matFromNode.GetS();
 
-			FbxMeshInfo& meshInfo = _meshes.back();
-			Vec3 position = { static_cast<float>(nodePosition[0]), static_cast<float>(nodePosition[1]), static_cast<float>(nodePosition[2]) };
-			Vec3 rotation = { static_cast<float>(nodeRotation[0]), static_cast<float>(nodeRotation[1]), static_cast<float>(nodeRotation[2]) };
-			Vec3 scale = { static_cast<float>(nodeScale[0]), static_cast<float>(nodeScale[1]), static_cast<float>(nodeScale[2]) };
+			//FbxMeshInfo& meshInfo = _meshes.back();
+			//Vec3 position = { static_cast<float>(nodePosition[0]), static_cast<float>(nodePosition[2]), static_cast<float>(nodePosition[1]) };
+			//Vec3 rotation = { static_cast<float>(nodeRotation[0]), static_cast<float>(nodeRotation[2]), static_cast<float>(nodeRotation[1]) };
+			//Vec3 scale = { static_cast<float>(nodeScale[0]), static_cast<float>(nodeScale[2]), static_cast<float>(nodeScale[1]) };
 
-			meshInfo.position = position;
-			meshInfo.rotation = rotation;
-			meshInfo.scale = scale;
+			//meshInfo.position = position * 0.01f;
+			//meshInfo.rotation = rotation;
+			//meshInfo.scale = scale;
+
+			FbxMeshInfo& meshInfo = _meshes.back();
+
+			// 1. 좌표 변환 (Y-Up → Z-Up, 단위 변환 적용)
+			meshInfo.position = {
+				static_cast<float>(nodePosition[0]) * 0.01f,  // X 그대로
+				static_cast<float>(nodePosition[2]) * 0.01f,  // Z ↔ Y 교체
+				static_cast<float>(nodePosition[1]) * 0.01f   // Y → Z
+			};
+
+			// 2. 회전 변환 (Y-Up → Z-Up)
+			meshInfo.rotation = {
+				DirectX::XMConvertToRadians(static_cast<float>(nodeRotation[0])),  // X 회전 그대로
+				DirectX::XMConvertToRadians(static_cast<float>(nodeRotation[2])),  // Z ↔ Y 교체
+				DirectX::XMConvertToRadians(static_cast<float>(nodeRotation[1]))   // Y → Z
+			};
+
+			// 3. 스케일 변환 (단위 변환 적용)
+			meshInfo.scale = {
+				static_cast<float>(nodeScale[0]),  // X 그대로
+				static_cast<float>(nodeScale[2]),  // Z ↔ Y 교체
+				static_cast<float>(nodeScale[1])   // Y → Z
+			};
 
 			break;
 		}
