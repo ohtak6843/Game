@@ -76,6 +76,21 @@ void FBXLoader::ParseNode(FbxNode* node)
 		{
 		case FbxNodeAttribute::eMesh:
 			LoadMesh(node->GetMesh());
+			
+			FbxAMatrix matFromNode = node->EvaluateLocalTransform();
+			FbxVector4 nodePosition = matFromNode.GetT();
+			FbxVector4 nodeRotation = matFromNode.GetR();
+			FbxVector4 nodeScale = matFromNode.GetS();
+
+			FbxMeshInfo& meshInfo = _meshes.back();
+			Vec3 position = { static_cast<float>(nodePosition[0]), static_cast<float>(nodePosition[1]), static_cast<float>(nodePosition[2]) };
+			Vec3 rotation = { static_cast<float>(nodeRotation[0]), static_cast<float>(nodeRotation[1]), static_cast<float>(nodeRotation[2]) };
+			Vec3 scale = { static_cast<float>(nodeScale[0]), static_cast<float>(nodeScale[1]), static_cast<float>(nodeScale[2]) };
+
+			meshInfo.position = position;
+			meshInfo.rotation = rotation;
+			meshInfo.scale = scale;
+
 			break;
 		}
 	}

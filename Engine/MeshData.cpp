@@ -40,6 +40,11 @@ shared_ptr<MeshData> MeshData::LoadFromFBX(const wstring& path)
 		MeshRenderInfo info = {};
 		info.mesh = mesh;
 		info.materials = materials;
+
+		info.position = loader.GetMesh(i).position;
+		info.rotation = loader.GetMesh(i).rotation;
+		info.scale = loader.GetMesh(i).scale;
+
 		meshData->_meshRenders.push_back(info);
 	}
 
@@ -77,6 +82,10 @@ vector<shared_ptr<GameObject>> MeshData::Instantiate()
 			animator->SetBones(info.mesh->GetBones());
 			animator->SetAnimClip(info.mesh->GetAnimClip());
 		}
+
+		gameObject->GetTransform()->SetLocalPosition(info.position);
+		gameObject->GetTransform()->SetLocalRotation(info.rotation);
+		gameObject->GetTransform()->SetLocalScale(info.scale);
 
 		v.push_back(gameObject);
 	}

@@ -9,6 +9,10 @@ struct MeshRenderInfo
 {
 	shared_ptr<Mesh>				mesh;
 	vector<shared_ptr<Material>>	materials;
+
+	Vec3							position;
+	Vec3							rotation;
+	Vec3							scale;
 };
 
 class MeshData : public Object
