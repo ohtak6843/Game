@@ -85,15 +85,15 @@ void FBXLoader::ParseNode(FbxNode* node)
 			FbxMeshInfo& meshInfo = _meshes.back();
 
 			meshInfo.position = {
-				static_cast<float>(-nodePosition[0]) * 0.01f,
+				static_cast<float>(nodePosition[0]) * 0.01f,
 				static_cast<float>(nodePosition[2]) * 0.01f,
-				static_cast<float>(-nodePosition[1]) * 0.01f
+				static_cast<float>(nodePosition[1]) * 0.01f
 			};
 
 			meshInfo.rotation = {
-				DirectX::XMConvertToRadians(static_cast<float>(nodeRotation[0])),
+				DirectX::XMConvertToRadians(static_cast<float>(-nodeRotation[0])),
 				DirectX::XMConvertToRadians(static_cast<float>(-nodeRotation[2])),
-				DirectX::XMConvertToRadians(static_cast<float>(nodeRotation[1]))
+				DirectX::XMConvertToRadians(static_cast<float>(-nodeRotation[1]))
 			};
 
 			meshInfo.scale = {
@@ -259,7 +259,12 @@ void FBXLoader::GetTangent(FbxMesh* mesh, FbxMeshInfo* meshInfo, int32 idx, int3
 
 void FBXLoader::GetUV(FbxMesh* mesh, FbxMeshInfo* meshInfo, int32 idx, int32 uvIndex)
 {
-	FbxVector2 uv = mesh->GetElementUV()->GetDirectArray().GetAt(uvIndex);
+	//FbxVector2 uv = mesh->GetElementUV()->GetDirectArray().GetAt(uvIndex);
+	if (mesh->GetElementUVCount() == 0)
+		return;
+
+	FbxGeometryElementUV* uvElement = mesh->GetElementUV(0);
+	FbxVector2 uv = uvElement->GetDirectArray().GetAt(uvIndex);
 	meshInfo->vertices[idx].uv.x = static_cast<float>(uv.mData[0]);
 	meshInfo->vertices[idx].uv.y = 1.f - static_cast<float>(uv.mData[1]);
 }
