@@ -192,3 +192,7 @@ extern unique_ptr<class Engine> GEngine;
 // Utils
 wstring s2ws(const string& s);
 string ws2s(const wstring& s);
+
+#define PI ((FLOAT) 3.141592654F)
+#define RadianToDegree(radian) ((radian) * (180.0f / PI))
+#define DegreeToRadian(degree) ((degree) * (PI / 180.0f))
