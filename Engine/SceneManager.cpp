@@ -287,7 +287,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			meshRenderer->SetMesh(mesh);
 		}
 		{
-			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"HUD");
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Crosshair", L"..\\Resources\\Texture\\Crosshair01.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
@@ -316,28 +316,28 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 
-//#pragma region FBX
-//	{
-//		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\AbandonedFactory_Root.fbx");
-//		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Male.fbx");
-//		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Dragon.fbx");
-//		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Player.fbx");
-//		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\treasure_chest.fbx");
-//
-//		vector<shared_ptr<GameObject>> gameObjects = meshData->Instantiate();
-//
-//		for (auto& gameObject : gameObjects)
-//		{
-//			gameObject->SetName(L"Dragon");
-//			gameObject->SetCheckFrustum(false);
-//			//gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 300.f));
-//			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-//			gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
-//			scene->AddGameObject(gameObject);
-//			gameObject->AddComponent(make_shared<TestDragon>());
-//		}
-//	}
-//#pragma endregion
+#pragma region FBX
+	{
+		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\AbandonedFactory_Root.fbx");
+		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Male.fbx");
+		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Dragon.fbx");
+		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Player.fbx");
+		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\treasure_chest.fbx");
+
+		vector<shared_ptr<GameObject>> gameObjects = meshData->Instantiate();
+
+		for (auto& gameObject : gameObjects)
+		{
+			gameObject->SetName(L"Dragon");
+			gameObject->SetCheckFrustum(false);
+			//gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 300.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			//gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+			scene->AddGameObject(gameObject);
+			gameObject->AddComponent(make_shared<TestDragon>());
+		}
+	}
+#pragma endregion
 
 	return scene;
 }
