@@ -133,4 +133,6 @@ private:
 	vector<shared_ptr<FbxBoneInfo>>		_bones;
 	vector<shared_ptr<FbxAnimClipInfo>>	_animClips;
 	FbxArray<FbxString*>				_animNames;
+
+	unordered_map<int32, vector<int32>> _controlPointToVertexIndices;
 };

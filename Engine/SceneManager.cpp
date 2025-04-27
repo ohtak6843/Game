@@ -288,7 +288,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"HUD");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Crosshair", L"..\\Resources\\Texture\\Crosshair01.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Crosshair", L"..\\Resources\\Texture\\Crosshair\\crosshair01.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -332,7 +332,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			//gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 300.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			//gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+			//gameObject->GetTransform()->SetLocalRotation(Vec3(1.f, 1.f, 1.f));
+			gameObject->GetTransform()->LookAt(Vec3(0.f, 1.f, 0.f));
 			scene->AddGameObject(gameObject);
 			gameObject->AddComponent(make_shared<TestDragon>());
 		}

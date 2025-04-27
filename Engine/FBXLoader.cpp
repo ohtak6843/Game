@@ -120,6 +120,62 @@ void FBXLoader::ParseNode(FbxNode* node)
 		ParseNode(node->GetChild(i));
 }
 
+//void FBXLoader::LoadMesh(FbxMesh* mesh)
+//{
+//	_meshes.push_back(FbxMeshInfo());
+//	FbxMeshInfo& meshInfo = _meshes.back();
+//
+//	meshInfo.name = s2ws(mesh->GetName());
+//
+//	const int32 vertexCount = mesh->GetControlPointsCount();
+//	meshInfo.vertices.resize(vertexCount);
+//	meshInfo.boneWeights.resize(vertexCount);
+//
+//	// Position
+//	FbxVector4* controlPoints = mesh->GetControlPoints();
+//	for (int32 i = 0; i < vertexCount; ++i)
+//	{
+//		meshInfo.vertices[i].pos.x = static_cast<float>(controlPoints[i].mData[0]);
+//		meshInfo.vertices[i].pos.y = static_cast<float>(controlPoints[i].mData[2]);
+//		meshInfo.vertices[i].pos.z = static_cast<float>(controlPoints[i].mData[1]);
+//	}
+//
+//	const int32 materialCount = mesh->GetNode()->GetMaterialCount();
+//	meshInfo.indices.resize(materialCount);
+//
+//	FbxGeometryElementMaterial* geometryElementMaterial = mesh->GetElementMaterial();
+//
+//	const int32 polygonSize = mesh->GetPolygonSize(0);
+//	assert(polygonSize == 3);
+//
+//	uint32 arrIdx[3];
+//	uint32 vertexCounter = 0; // 정점의 개수
+//
+//	const int32 triCount = mesh->GetPolygonCount(); // 메쉬의 삼각형 개수를 가져온다
+//	for (int32 i = 0; i < triCount; i++) // 삼각형의 개수
+//	{
+//		for (int32 j = 0; j < 3; j++) // 삼각형은 세 개의 정점으로 구성
+//		{
+//			int32 controlPointIndex = mesh->GetPolygonVertex(i, j); // 제어점의 인덱스 추출
+//			arrIdx[j] = controlPointIndex;
+//
+//			GetNormal(mesh, &meshInfo, controlPointIndex, vertexCounter);
+//			GetTangent(mesh, &meshInfo, controlPointIndex, vertexCounter);
+//			GetUV(mesh, &meshInfo, controlPointIndex, mesh->GetTextureUVIndex(i, j));
+//
+//			vertexCounter++;
+//		}
+//
+//		const uint32 subsetIdx = geometryElementMaterial->GetIndexArray().GetAt(i);
+//		meshInfo.indices[subsetIdx].push_back(arrIdx[0]);
+//		meshInfo.indices[subsetIdx].push_back(arrIdx[2]);
+//		meshInfo.indices[subsetIdx].push_back(arrIdx[1]);
+//	}
+//
+//	// Animation
+//	LoadAnimationData(mesh, &meshInfo);
+//}
+
 void FBXLoader::LoadMesh(FbxMesh* mesh)
 {
 	_meshes.push_back(FbxMeshInfo());
@@ -128,17 +184,9 @@ void FBXLoader::LoadMesh(FbxMesh* mesh)
 	meshInfo.name = s2ws(mesh->GetName());
 
 	const int32 vertexCount = mesh->GetControlPointsCount();
-	meshInfo.vertices.resize(vertexCount);
-	meshInfo.boneWeights.resize(vertexCount);
 
 	// Position
 	FbxVector4* controlPoints = mesh->GetControlPoints();
-	for (int32 i = 0; i < vertexCount; ++i)
-	{
-		meshInfo.vertices[i].pos.x = static_cast<float>(controlPoints[i].mData[0]);
-		meshInfo.vertices[i].pos.y = static_cast<float>(controlPoints[i].mData[2]);
-		meshInfo.vertices[i].pos.z = static_cast<float>(controlPoints[i].mData[1]);
-	}
 
 	const int32 materialCount = mesh->GetNode()->GetMaterialCount();
 	meshInfo.indices.resize(materialCount);
@@ -152,27 +200,6 @@ void FBXLoader::LoadMesh(FbxMesh* mesh)
 	uint32 vertexCounter = 0; // 정점의 개수
 
 	const int32 triCount = mesh->GetPolygonCount(); // 메쉬의 삼각형 개수를 가져온다
-	//for (int32 i = 0; i < triCount; i++) // 삼각형의 개수
-	//{
-	//	for (int32 j = 0; j < 3; j++) // 삼각형은 세 개의 정점으로 구성
-	//	{
-	//		int32 controlPointIndex = mesh->GetPolygonVertex(i, j); // 제어점의 인덱스 추출
-	//		arrIdx[j] = controlPointIndex;
-
-	//		GetNormal(mesh, &meshInfo, controlPointIndex, vertexCounter);
-	//		GetTangent(mesh, &meshInfo, controlPointIndex, vertexCounter);
-	//		GetUV(mesh, &meshInfo, controlPointIndex, mesh->GetTextureUVIndex(i, j));
-
-	//		vertexCounter++;
-	//	}
-
-	//	const uint32 subsetIdx = geometryElementMaterial->GetIndexArray().GetAt(i);
-	//	meshInfo.indices[subsetIdx].push_back(arrIdx[0]);
-	//	meshInfo.indices[subsetIdx].push_back(arrIdx[2]);
-	//	meshInfo.indices[subsetIdx].push_back(arrIdx[1]);
-	//}
-
-#pragma region test
 	meshInfo.vertices.resize(triCount * 3);
 	meshInfo.boneWeights.resize(triCount * 3);
 	for (int32 i = 0; i < triCount; i++) // 삼각형의 개수
@@ -185,7 +212,7 @@ void FBXLoader::LoadMesh(FbxMesh* mesh)
 			vertex.pos.x = static_cast<float>(controlPoints[controlPointIndex].mData[0]);
 			vertex.pos.y = static_cast<float>(controlPoints[controlPointIndex].mData[2]);
 			vertex.pos.z = static_cast<float>(controlPoints[controlPointIndex].mData[1]);
-			
+
 			if (mesh->GetElementNormalCount() == 0)
 				return;
 
@@ -221,6 +248,8 @@ void FBXLoader::LoadMesh(FbxMesh* mesh)
 			vertex.uv.x = static_cast<float>(uv.mData[0]);
 			vertex.uv.y = 1.f - static_cast<float>(uv.mData[1]);
 
+			_controlPointToVertexIndices[controlPointIndex].push_back(vertexCounter);
+
 			meshInfo.vertices[vertexCounter] = vertex;
 
 			vertexCounter++;
@@ -231,7 +260,6 @@ void FBXLoader::LoadMesh(FbxMesh* mesh)
 		meshInfo.indices[subsetIdx].push_back(i * 3 + 2);
 		meshInfo.indices[subsetIdx].push_back(i * 3 + 1);
 	}
-#pragma endregion
 
 	// Animation
 	LoadAnimationData(mesh, &meshInfo);
@@ -549,21 +577,33 @@ void FBXLoader::FillBoneWeight(FbxMesh* mesh, FbxMeshInfo* meshInfo)
 			animBoneWeight[w] = static_cast<float>(boneWeight.boneWeights[w].second);
 		}
 
-		memcpy(&meshInfo->vertices[v].indices, animBoneIndex, sizeof(Vec4));
-		memcpy(&meshInfo->vertices[v].weights, animBoneWeight, sizeof(Vec4));
+		for (int32 vertexIndex : _controlPointToVertexIndices[v])
+		{
+			memcpy(&meshInfo->vertices[vertexIndex].indices, animBoneIndex, sizeof(Vec4));
+			memcpy(&meshInfo->vertices[vertexIndex].weights, animBoneWeight, sizeof(Vec4));
+		}
 	}
 }
 
 void FBXLoader::LoadBoneWeight(FbxCluster* cluster, int32 boneIdx, FbxMeshInfo* meshInfo)
 {
-	const int32 indicesCount = cluster->GetControlPointIndicesCount();
-	for (int32 i = 0; i < indicesCount; i++)
-	{
-		double weight = cluster->GetControlPointWeights()[i];
-		int32 vtxIdx = cluster->GetControlPointIndices()[i];
-		meshInfo->boneWeights[vtxIdx].AddWeights(boneIdx, weight);
-	}
+    const int32 indicesCount = cluster->GetControlPointIndicesCount();
+    for (int32 i = 0; i < indicesCount; i++)
+    {
+        double weight = cluster->GetControlPointWeights()[i];
+        int32 controlPointIndex = cluster->GetControlPointIndices()[i];
+
+        auto it = _controlPointToVertexIndices.find(controlPointIndex);
+        if (it != _controlPointToVertexIndices.end())
+        {
+            for (int32 vertexIndex : it->second)
+            {
+                meshInfo->boneWeights[vertexIndex].AddWeights(boneIdx, weight);
+            }
+        }
+    }
 }
+
 
 void FBXLoader::LoadOffsetMatrix(FbxCluster* cluster, const FbxAMatrix& matNodeTransform, int32 boneIdx, FbxMeshInfo* meshInfo)
 {
