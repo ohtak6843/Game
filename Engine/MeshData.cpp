@@ -6,6 +6,8 @@
 #include "Resources.h"
 #include "Transform.h"
 #include "MeshRenderer.h"
+#include "BaseCollider.h"
+#include "SphereCollider.h"
 #include "Animator.h"
 
 MeshData::MeshData() : Object(OBJECT_TYPE::MESH_DATA)
@@ -75,17 +77,20 @@ vector<shared_ptr<GameObject>> MeshData::Instantiate()
 		for (uint32 i = 0; i < info.materials.size(); i++)
 			gameObject->GetMeshRenderer()->SetMaterial(info.materials[i], i);
 
-		//if (info.mesh->IsAnimMesh())
-		//{
-		//	shared_ptr<Animator> animator = make_shared<Animator>();
-		//	gameObject->AddComponent(animator);
-		//	animator->SetBones(info.mesh->GetBones());
-		//	animator->SetAnimClip(info.mesh->GetAnimClip());
-		//}
+		if (info.mesh->IsAnimMesh())
+		{
+			shared_ptr<Animator> animator = make_shared<Animator>();
+			gameObject->AddComponent(animator);
+			animator->SetBones(info.mesh->GetBones());
+			animator->SetAnimClip(info.mesh->GetAnimClip());
+		}
 
 		gameObject->GetTransform()->SetLocalPosition(info.position);
 		gameObject->GetTransform()->SetLocalRotation(info.rotation);
 		gameObject->GetTransform()->SetLocalScale(info.scale);
+
+		//gameObject->AddComponent(make_shared<SphereCollider>());
+		//dynamic_pointer_cast<SphereCollider>(gameObject->GetCollider())->SetRadius(10.f);
 
 		v.push_back(gameObject);
 	}
