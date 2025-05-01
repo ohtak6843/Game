@@ -81,7 +81,16 @@ void FBXLoader::ParseNode(FbxNode* node)
 				LoadMesh(node->GetMesh());;
 
 			//LoadMesh(node->GetMesh());
-			FbxAMatrix matFromNode = node->EvaluateGlobalTransform();
+			//FbxAMatrix matFromNode = node->EvaluateLocalTransform();
+			FbxNode* current = node;
+			FbxAMatrix matFromNode = FbxAMatrix();
+
+			while (current)
+			{
+				FbxAMatrix local = current->EvaluateLocalTransform();
+				matFromNode = local * matFromNode;
+				current = current->GetParent();
+			}
 			FbxVector4 nodePosition = matFromNode.GetT();
 			FbxVector4 nodeRotation = matFromNode.GetR();
 			FbxVector4 nodeScale = matFromNode.GetS();
@@ -89,21 +98,21 @@ void FBXLoader::ParseNode(FbxNode* node)
 			FbxMeshInfo& meshInfo = _meshes.back();
 
 			meshInfo.position = {
-				static_cast<float>(-nodePosition[0] * 0.01),
-				static_cast<float>(nodePosition[1] * 0.01),
-				static_cast<float>(nodePosition[2] * 0.01)
+				static_cast<float>(nodePosition[0] * 0.01),
+				static_cast<float>(nodePosition[2] * 0.01),
+				static_cast<float>(nodePosition[1] * 0.01)
 			};
 
 			meshInfo.rotation = {
 				static_cast<float>(-nodeRotation[0]),
-				static_cast<float>(-nodeRotation[1]),
-				static_cast<float>(nodeRotation[2])
+				static_cast<float>(-nodeRotation[2]),
+				static_cast<float>(-nodeRotation[1])
 			};
 
 			meshInfo.scale = {
 				static_cast<float>(nodeScale[0] * 0.01),
-				static_cast<float>(nodeScale[1] * 0.01),
-				static_cast<float>(nodeScale[2] * 0.01)
+				static_cast<float>(nodeScale[2] * 0.01),
+				static_cast<float>(nodeScale[1] * 0.01)
 			};
 			break;
 		}
