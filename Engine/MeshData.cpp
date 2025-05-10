@@ -89,9 +89,6 @@ vector<shared_ptr<GameObject>> MeshData::Instantiate()
 		gameObject->GetTransform()->SetLocalRotation(info.rotation);
 		gameObject->GetTransform()->SetLocalScale(info.scale);
 
-		//gameObject->AddComponent(make_shared<SphereCollider>());
-		//dynamic_pointer_cast<SphereCollider>(gameObject->GetCollider())->SetRadius(10.f);
-
 		v.push_back(gameObject);
 	}
 
