@@ -324,8 +324,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(t);
 
 		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\AbandonedFactory_Root.fbx");
-		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Factory1Items.fbx");
-		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Player2.fbx");
+		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Factory1Items.fbx");
+		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Player2.fbx");
 		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Dragon.fbx");
 		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Player.fbx");
 
@@ -337,7 +337,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			//gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 300.f));
 			//gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			//gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+			//gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, -60.f, -60.f));
 			//gameObject->AddComponent(make_shared<TestDragon>());
 			//gameObject->GetTransform()->SetParent(t->GetTransform());
 			scene->AddGameObject(gameObject);

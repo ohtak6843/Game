@@ -95,19 +95,7 @@ void FBXLoader::ParseNode(FbxNode* node)
 			//}
 
 			FbxVector4 nodePosition = matFromNode.GetT();
-			//FbxVector4 nodeRotation = matFromNode.GetR();
-
-			// 쿼터니언용
-			FbxQuaternion nodeQuaternion = matFromNode.GetQ();
-			Vec4 nodeQ = {
-				static_cast<float>(nodeQuaternion[0]),
-				static_cast<float>(nodeQuaternion[1]),
-				static_cast<float>(nodeQuaternion[2]),
-				static_cast<float>(nodeQuaternion[3])
-			};
-			Vec3 nodeRotation = Transform::QuaternionToEuler(nodeQ);
-			nodeRotation = RadianToDegree(nodeRotation);
-			// 여기까지
+			FbxVector4 nodeRotation = matFromNode.GetR();
 
 			FbxVector4 nodeScale = matFromNode.GetS();
 
@@ -119,19 +107,11 @@ void FBXLoader::ParseNode(FbxNode* node)
 				static_cast<float>(nodePosition[2])
 			};
 
-			//meshInfo.rotation = {
-			//	static_cast<float>(nodeRotation[0]),
-			//	static_cast<float>(-nodeRotation[1]),
-			//	static_cast<float>(-nodeRotation[2])
-			//};
-
-			// 쿼터니언용
 			meshInfo.rotation = {
-				static_cast<float>(nodeRotation.x),
-				static_cast<float>(-nodeRotation.y),
-				static_cast<float>(-nodeRotation.z)
+				static_cast<float>(nodeRotation[0]),
+				static_cast<float>(-nodeRotation[1]),
+				static_cast<float>(nodeRotation[2])
 			};
-			// 여기까지
 
 			meshInfo.scale = {
 				static_cast<float>(nodeScale[0]),
