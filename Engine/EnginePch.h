@@ -4,6 +4,7 @@
 #define _HAS_STD_BYTE 0
 
 // 각종 include
+#include <iostream>
 #include <windows.h>
 #include <tchar.h>
 #include <memory>
@@ -57,6 +58,9 @@ using namespace Microsoft::WRL;
 #pragma comment(lib, "FBX\\release\\libxml2-md.lib")
 #pragma comment(lib, "FBX\\release\\zlib-md.lib")
 #endif
+
+// 콘솔 출력을 위한 설정
+#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
 
 // 각종 typedef
 using int8 = __int8;

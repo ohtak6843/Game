@@ -54,6 +54,7 @@ struct FbxMeshInfo
 	Vec3								position;
 	Vec3								rotation;
 	Vec3								scale;
+	int32								rightHandIdx;
 };
 
 struct FbxKeyFrameInfo
@@ -99,9 +100,6 @@ private:
 	void LoadMesh(FbxMesh* mesh);
 	void LoadMaterial(FbxSurfaceMaterial* surfaceMaterial);
 
-	void		GetNormal(FbxMesh* mesh, FbxMeshInfo* container, int32 idx, int32 vertexCounter);
-	void		GetTangent(FbxMesh* mesh, FbxMeshInfo* container, int32 idx, int32 vertexCounter);
-	void		GetUV(FbxMesh* mesh, FbxMeshInfo* container, int32 idx, int32 vertexCounter);
 	Vec4		GetMaterialData(FbxSurfaceMaterial* surface, const char* materialName, const char* factorName);
 	wstring		GetTextureRelativeName(FbxSurfaceMaterial* surface, const char* materialProperty);
 
@@ -135,4 +133,6 @@ private:
 	FbxArray<FbxString*>				_animNames;
 
 	unordered_map<int32, vector<int32>> _controlPointToVertexIndices;
+
+	int32								_rightHandIdx = -1;	
 };

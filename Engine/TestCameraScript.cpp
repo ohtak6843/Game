@@ -31,33 +31,33 @@ void TestCameraScript::LateUpdate()
 	if (INPUT->GetButton(KEY_TYPE::D))
 		pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
 
-	if (INPUT->GetButton(KEY_TYPE::Q))
-	{
-		Vec3 rotation = GetTransform()->GetLocalRotation();
-		rotation.x += DELTA_TIME * 15.0f;
-		GetTransform()->SetLocalRotation(rotation);
-	}
+	//if (INPUT->GetButton(KEY_TYPE::Q))
+	//{
+	//	Vec3 rotation = GetTransform()->GetLocalRotation();
+	//	rotation.x += DELTA_TIME * 15.0f;
+	//	GetTransform()->SetLocalRotation(rotation);
+	//}
 
-	if (INPUT->GetButton(KEY_TYPE::E))
-	{
-		Vec3 rotation = GetTransform()->GetLocalRotation();
-		rotation.x -= DELTA_TIME * 15.0f;
-		GetTransform()->SetLocalRotation(rotation);
-	}
+	//if (INPUT->GetButton(KEY_TYPE::E))
+	//{
+	//	Vec3 rotation = GetTransform()->GetLocalRotation();
+	//	rotation.x -= DELTA_TIME * 15.0f;
+	//	GetTransform()->SetLocalRotation(rotation);
+	//}
 
-	if (INPUT->GetButton(KEY_TYPE::Z))
-	{
-		Vec3 rotation = GetTransform()->GetLocalRotation();
-		rotation.y += DELTA_TIME * 15.0f;
-		GetTransform()->SetLocalRotation(rotation);
-	}
+	//if (INPUT->GetButton(KEY_TYPE::Z))
+	//{
+	//	Vec3 rotation = GetTransform()->GetLocalRotation();
+	//	rotation.y += DELTA_TIME * 15.0f;
+	//	GetTransform()->SetLocalRotation(rotation);
+	//}
 
-	if (INPUT->GetButton(KEY_TYPE::C))
-	{
-		Vec3 rotation = GetTransform()->GetLocalRotation();
-		rotation.y -= DELTA_TIME * 15.0f;
-		GetTransform()->SetLocalRotation(rotation);
-	}
+	//if (INPUT->GetButton(KEY_TYPE::C))
+	//{
+	//	Vec3 rotation = GetTransform()->GetLocalRotation();
+	//	rotation.y -= DELTA_TIME * 15.0f;
+	//	GetTransform()->SetLocalRotation(rotation);
+	//}
 
 	if (INPUT->GetButtonDown(KEY_TYPE::RBUTTON))
 	{

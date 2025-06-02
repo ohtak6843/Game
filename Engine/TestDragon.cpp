@@ -2,6 +2,7 @@
 #include "TestDragon.h"
 #include "Input.h"
 #include "Animator.h"
+#include "Transform.h"
 
 void TestDragon::Update()
 {
@@ -21,5 +22,15 @@ void TestDragon::Update()
 
 		int32 index = (currentIndex - 1 + count) % count;
 		GetAnimator()->Play(index);
+	}
+
+	if (INPUT->GetButtonDown(KEY_TYPE::KEY_3))
+	{
+		GetTransform()->AddLocalRotation(Vec3(0.0f, 15.f, 0.0f));
+	}
+
+	if (INPUT->GetButtonDown(KEY_TYPE::KEY_4))
+	{
+		GetTransform()->AddLocalRotation(Vec3(0.0f, -15.f, 0.0f));
 	}
 }

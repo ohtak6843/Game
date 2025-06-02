@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "MeshRenderer.h"
 #include "StructuredBuffer.h"
+#include "Transform.h"
 
 Animator::Animator() : Component(COMPONENT_TYPE::ANIMATOR)
 {
@@ -60,6 +61,35 @@ void Animator::PushData()
 
 	// Graphics Shader
 	_boneFinalMatrix->PushGraphicsData(SRV_REGISTER::t7);
+}
+
+const Matrix& Animator::GetBoneMatrix(uint32 idx)
+{
+	assert(idx < _bones->size());
+
+	Matrix result = Matrix::Identity;
+
+	if ((*_animClips)[_clipIndex].keyFrames[idx].size() != 0)
+	{
+		const AnimClipInfo& animClipInfo = (*_animClips)[_clipIndex];
+		const std::vector<KeyFrameInfo>& keyFrames = animClipInfo.keyFrames[idx];
+		const KeyFrameInfo& keyFrame = keyFrames[_frame];
+
+		Matrix matBone = Matrix::CreateScale(keyFrame.scale.x, keyFrame.scale.y, keyFrame.scale.z);
+		matBone *= Matrix::CreateFromQuaternion(SimpleMath::Quaternion(
+			keyFrame.rotation.x,
+			keyFrame.rotation.y,
+			keyFrame.rotation.z,
+			keyFrame.rotation.w));
+		matBone *= Matrix::CreateTranslation(keyFrame.translate.x, keyFrame.translate.y, keyFrame.translate.z);
+		
+		//Matrix parentMat = GetTransform()->GetLocalToWorldMatrix();
+		//matBone = matBone * parentMat;
+	
+		result = matBone;
+	}
+
+	return result;
 }
 
 void Animator::Play(uint32 idx)

@@ -15,24 +15,18 @@ Transform::~Transform()
 
 void Transform::FinalUpdate()
 {
-	//Matrix matScale = Matrix::CreateScale(_localScale);
-	//Matrix matRotation = Matrix::CreateRotationX(_localRotation.x);
-	//matRotation *= Matrix::CreateRotationY(_localRotation.y);
-	//matRotation *= Matrix::CreateRotationZ(_localRotation.z);
-	//Matrix matTranslation = Matrix::CreateTranslation(_localPosition);
-
 	Matrix matScale = Matrix::CreateScale(_localScale);
 
 	SimpleMath::Quaternion q;
 
-	float sp = sinf(DegreeToRadian(_localRotation.x) * 0.5f);
-	float cp = cosf(DegreeToRadian(_localRotation.x) * 0.5f);
+	float sp = sinf(_localRotation.x * 0.5f);
+	float cp = cosf(_localRotation.x * 0.5f);
 
-	float sy = sinf(DegreeToRadian(_localRotation.y) * 0.5f);
-	float cy = cosf(DegreeToRadian(_localRotation.y) * 0.5f);
+	float sy = sinf(_localRotation.y * 0.5f);
+	float cy = cosf(_localRotation.y * 0.5f);
 
-	float sr = sinf(DegreeToRadian(_localRotation.z) * 0.5f);
-	float cr = cosf(DegreeToRadian(_localRotation.z) * 0.5f);
+	float sr = sinf(_localRotation.z * 0.5f);
+	float cr = cosf(_localRotation.z * 0.5f);
 
 	q.w = cy * cp * cr + sy * sp * sr;
 	q.x = cy * sp * cr + sy * cp * sr;
@@ -58,7 +52,7 @@ void Transform::PushData()
 	transformParams.matWorld = _matWorld;
 	transformParams.matView = Camera::S_MatView;
 	transformParams.matProjection = Camera::S_MatProjection;
-	transformParams.matWV = _matWorld * Camera::S_MatView;
+	transformParams.matWV = _matWorld  * Camera::S_MatView;
 	transformParams.matWVP = _matWorld * Camera::S_MatView * Camera::S_MatProjection;
 	transformParams.matViewInv = Camera::S_MatView.Invert();
 
@@ -84,12 +78,7 @@ void Transform::LookAt(const Vec3& dir)
 	matrix.Up(up);
 	matrix.Backward(front);
 
-	Vec3 rotation = DecomposeRotationMatrix(matrix);
-	_localRotation = {
-		RadianToDegree(rotation.x),
-		RadianToDegree(rotation.y),
-		RadianToDegree(rotation.z)
-	};
+	_localRotation = DecomposeRotationMatrix(matrix);
 }
 
 bool Transform::CloseEnough(const float& a, const float& b, const float& epsilon)
