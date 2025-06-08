@@ -82,9 +82,6 @@ const Matrix& Animator::GetBoneMatrix(uint32 idx)
 			keyFrame.rotation.z,
 			keyFrame.rotation.w));
 		matBone *= Matrix::CreateTranslation(keyFrame.translate.x, keyFrame.translate.y, keyFrame.translate.z);
-		
-		//Matrix parentMat = GetTransform()->GetLocalToWorldMatrix();
-		//matBone = matBone * parentMat;
 	
 		result = matBone;
 	}

@@ -21,44 +21,41 @@ TestBoneScript::~TestBoneScript()
 
 void TestBoneScript::LateUpdate()
 {
-	//if (INPUT->GetButton(KEY_TYPE::R))
-	//{
-	//	_baseRotation.x += DELTA_TIME * 30.0f;
-	//}
+	if (INPUT->GetButton(KEY_TYPE::R))
+	{
+		_baseRotation.x += DELTA_TIME * 5.0f;
+	}
 
-	//if (INPUT->GetButton(KEY_TYPE::T))
-	//{
-	//	_baseRotation.x -= DELTA_TIME * 30.0f;
-	//}
+	if (INPUT->GetButton(KEY_TYPE::T))
+	{
+		_baseRotation.x -= DELTA_TIME * 5.0f;
+	}
 
-	//if (INPUT->GetButton(KEY_TYPE::F))
-	//{
-	//	_baseRotation.y += DELTA_TIME * 30.0f;
-	//}
+	if (INPUT->GetButton(KEY_TYPE::F))
+	{
+		_baseRotation.y += DELTA_TIME * 5.0f;
+	}
 
-	//if (INPUT->GetButton(KEY_TYPE::G))
-	//{
-	//	_baseRotation.y -= DELTA_TIME * 30.0f;
-	//}
+	if (INPUT->GetButton(KEY_TYPE::G))
+	{
+		_baseRotation.y -= DELTA_TIME * 5.0f;
+	}
 
-	//if (INPUT->GetButton(KEY_TYPE::V))
-	//{
-	//	_baseRotation.z += DELTA_TIME * 30.0f;
-	//}
+	if (INPUT->GetButton(KEY_TYPE::V))
+	{
+		_baseRotation.z += DELTA_TIME * 5.0f;
+	}
 
-	//if (INPUT->GetButton(KEY_TYPE::B))
-	//{
-	//	_baseRotation.z -= DELTA_TIME * 30.0f;
-	//}
+	if (INPUT->GetButton(KEY_TYPE::B))
+	{
+		_baseRotation.z -= DELTA_TIME * 5.0f;
+	}
 
 	if (_parentObject == nullptr)
 		return;
 
 	int32 rightHandBoneIndex = _parentObject->GetMeshRenderer()->GetMesh()->GetRightHandBoneIndex();
 	Matrix rightHandBoneMatrix = _parentObject->GetAnimator()->GetBoneMatrix(rightHandBoneIndex);
-	Matrix parentMatrix = _parentObject->GetTransform()->GetLocalToWorldMatrix();
-
-	rightHandBoneMatrix = rightHandBoneMatrix * parentMatrix;
 
 	// Base 행렬 계산
 	Matrix matScale = Matrix::CreateScale(_baseScale);
@@ -84,19 +81,26 @@ void TestBoneScript::LateUpdate()
 
 	Matrix matLocal = matScale * matRotation * matTranslation;
 
-	matLocal *= rightHandBoneMatrix;
+	Matrix matFinal = matLocal * rightHandBoneMatrix;
 
 	Vec3 scale{};
 	Vec3 rotation{};
 	Vec3 translation{};
 	SimpleMath::Quaternion orientation{};
-	matLocal.Decompose(scale, orientation, translation);
+
+
+	matFinal.Decompose(scale, orientation, translation);
 
 	rotation = Transform::QuaternionToEuler(orientation);
 	rotation.x = RadianToDegree(rotation.x);
 	rotation.y = RadianToDegree(rotation.y);
 	rotation.z = RadianToDegree(rotation.z);
 
+	GetTransform()->SetLocalScale(scale);
+	GetTransform()->SetLocalRotation(rotation);
+	GetTransform()->SetLocalPosition(translation);
+
+#pragma region PRINT
 	static float updateTime;
 	updateTime += DELTA_TIME;
 	if (updateTime >= 1.0f)
@@ -104,13 +108,12 @@ void TestBoneScript::LateUpdate()
 		//std::cout << "Scale: " << scale.x << ", " << scale.y << ", " << scale.z << std::endl;
 		//std::cout << "Orientation: " << orientation.x << ", " << orientation.y << ", " << orientation.z << ", " << orientation.w << std::endl;
 		//std::cout << "Traslation: " << translation.x << ", " << translation.y << ", " << translation.z << std::endl;
-		std::cout << "Rotation: " << rotation.x << ", " << rotation.y << ", " << rotation.z << std::endl;
-		//std::cout << "Transform: " << _basePosition.x << ", " << _basePosition.y << ", " << _basePosition.z << endl;
+		//std::cout << "Rotation: " << rotation.x << ", " << rotation.y << ", " << rotation.z << std::endl;
+
+		std::cout << "Rotation: " << RadianToDegree(_baseRotation.x) << ", " << RadianToDegree(_baseRotation.y) << ", " << RadianToDegree(_baseRotation.z) << endl;
+		//std::cout << "Transform: " << _basePosition.x << ", " << _basePosition.y << ", " << _baseRotation.z << endl;
 
 		updateTime = 0.0f;
 	}
-
-	GetTransform()->SetLocalScale(scale);
-	GetTransform()->SetLocalRotation(rotation);
-	GetTransform()->SetLocalPosition(translation);
+#pragma endregion
 }

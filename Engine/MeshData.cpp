@@ -83,9 +83,9 @@ vector<shared_ptr<GameObject>> MeshData::Instantiate()
 			animator->SetAnimClip(info.mesh->GetAnimClip());
 		}
 
-		//gameObject->GetTransform()->SetLocalPosition(info.position);
-		//gameObject->GetTransform()->SetLocalRotation(info.rotation);
-		//gameObject->GetTransform()->SetLocalScale(info.scale);
+		gameObject->GetTransform()->SetLocalPosition(info.position);
+		gameObject->GetTransform()->SetLocalRotation(info.rotation);
+		gameObject->GetTransform()->SetLocalScale(info.scale);
 
 		v.push_back(gameObject);
 	}

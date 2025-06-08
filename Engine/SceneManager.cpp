@@ -318,10 +318,28 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
+//#pragma region Map
+//	{
+//		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Factory1Items.fbx");
+//
+//		vector<shared_ptr<GameObject>> gameObjects = meshData->Instantiate();
+//
+//		for (auto& gameObject : gameObjects)
+//		{
+//			gameObject->SetName(L"Dragon");
+//			gameObject->SetCheckFrustum(false);
+//			//gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 300.f));
+//			//gameObject->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+//			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+//			scene->AddGameObject(gameObject);
+//		}
+//	}
+//#pragma endregion
+
 
 #pragma region FBX
 	{
-		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\AbandonedFactory_Root.fbx");
+		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Factory1Items.fbx");
 		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Male.fbx");
 		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Dragon.fbx");
 		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"..\\Resources\\FBX\\Player.fbx");
@@ -352,44 +370,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gunObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
 			gunObject->GetTransform()->SetLocalPosition(Vec3(-15.f, 30.f, 125.f));
 			gunObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+			gunObject->GetTransform()->SetParent(gameObjects[0]->GetTransform());
 			shared_ptr<TestBoneScript> script = make_shared<TestBoneScript>();
 			script->SetParentObject(gameObjects[0]);
 			gunObject->AddComponent(script);
 			scene->AddGameObject(gunObject);
-		}
-
-		{
-			//int32 rightHandBoneIndex = gameObjects[0]->GetMeshRenderer()->GetMesh()->GetRightHandBoneIndex();
-			//Matrix rightHandBoneMatrix = gameObjects[0]->GetAnimator()->GetBoneMatrix(rightHandBoneIndex);
-			//Vec3 scale{};
-			//Vec3 rotation{};
-			//Vec3 translation{};
-			//SimpleMath::Quaternion orientation{};
-			//rightHandBoneMatrix.Decompose(scale, orientation, translation);
-
-			//shared_ptr<GameObject> obj = make_shared<GameObject>();
-			//obj->SetName(L"OBJ");
-			//obj->AddComponent(make_shared<Transform>());
-			//obj->AddComponent(make_shared<SphereCollider>());
-			//obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-			//obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
-			//obj->SetStatic(false);
-			//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-			//{
-			//	shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadSphereMesh();
-			//	meshRenderer->SetMesh(sphereMesh);
-			//}
-			//{
-			//	shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-			//	meshRenderer->SetMaterial(material->Clone());
-			//}
-			//dynamic_pointer_cast<SphereCollider>(obj->GetCollider())->SetRadius(0.5f);
-			//dynamic_pointer_cast<SphereCollider>(obj->GetCollider())->SetCenter(Vec3(0.f, 0.f, 0.f));
-			//obj->AddComponent(meshRenderer);
-			//shared_ptr<TestBoneScript> script = make_shared<TestBoneScript>();
-			//script->SetParentObject(gameObjects[0]);
-			//obj->AddComponent(script);
-			//scene->AddGameObject(obj);
 		}
 	}
 #pragma endregion
